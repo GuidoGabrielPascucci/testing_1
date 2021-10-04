@@ -53,12 +53,13 @@ free space] - (0) if Ok
 
 
 int addEmployee(Employee* list, int len, int id, char name[], char lastName[], float salary, int sector) { 			// PARA QUE TANTOS PARAMETROS ??????????
-
-
-
-
 	int functionReturn = -1;
 
+	get_string(name, "Ingrese nombre: ", "Error. Ingrese nuevamente el nombre: ", 250);
+	get_string(lastName, "Ingrese apellido: ", "Error. Ingrese nuevamente el apellido: ", 250);
+	salary = get_float("Ingrese salario: ", "Error. Ingrese nuevamente el salario: ", 0, 500000);
+	sector = get_integer("Ingrese sector: ", "Error. Ingrese nuevamente sector: ", 0, 100);
+	get_id(list, len);
 
 	int index = employee_searchForEmptySpace(list, len);
 

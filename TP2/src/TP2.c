@@ -32,6 +32,7 @@ int main(void) {
 	printf("WELCOME!\n\n");
 	int option;
 	int contadorAltas = 0;
+	int resultado;
 
 	Employee arrayEmployees[MAXEMPLOYEES];
 
@@ -95,8 +96,9 @@ int main(void) {
 				             "5. EXIT\n", 1, 5);
 
 		switch (option) {
-			case 1:
+			case 1: 		// yo lo que hice fue hacer una funcion q pide todos los datos y luego llame a esa funcion y le pasas los datos que te pide.
 				enter_employee(arrayEmployees, MAXEMPLOYEES);
+
 				printf("\n\nID: %d\n"
 						"Name: %s\n"
 						"Last name: %s\n"
@@ -104,15 +106,13 @@ int main(void) {
 						"Sector: %d\n\n", (*arrayEmployees).id, (*arrayEmployees).name, (*arrayEmployees).lastName, (*arrayEmployees).salary, (*arrayEmployees).sector);
 
 
+				resultado = addEmployee((*arrayEmployees).id, (*arrayEmployees).name, (*arrayEmployees).lastName, (*arrayEmployees).salary, (*arrayEmployees).sector);
+
+
 
 				//aaB = addEmployee(arrayEmployees, MAXEMPLOYEES, arrayEmployees.id, arrayEmployees.name, arrayEmployees. lastName, arrayEmployees.salary, arrayEmployees.sector);
-
-
-
 				//show_employee(arrayEmployees);
-
 				//addEmployee(arrayEmployees, MAXEMPLOYEES, arrayEmployees.id, arrayEmployees.name, arrayEmployees.lastName, arrayEmployees.salary, arrayEmployees.sector);
-
 				/*
 				int addEmployee(Employee* list, int len, int id, char name[], char lastName[], float salary, int sector) {
 					int returno;
@@ -122,13 +122,7 @@ int main(void) {
 
 					return returno;
 				}
-				*/
-
-
-
-				/*
 				employee_getInformation(&arrayEmployees, arrayEmployees.name, arrayEmployees.lastName, arrayEmployees.salary, arrayEmployees.sector);
-
 				printf("Name: %s\n"
 					   "Apellido: %s\n"
 					   "Salary: %f\n"
@@ -138,7 +132,6 @@ int main(void) {
 				//addEmployee(arrayEmployees, MAXEMPLOYEES, arrayEmployees.id, arrayEmployees.name, arrayEmployees.lastName, arrayEmployees.salary, arrayEmployees.sector);
 
 
-				// yo lo que hice fue hacer una funcion q pide todos los datos y luego llame a esa funcion y le pasas los datos que te pide.
 
 
 
