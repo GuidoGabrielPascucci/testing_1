@@ -20,238 +20,159 @@ carga de algún empleado.
 */
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "ArrayEmployees.h"
 #include "Inputs.h"
 #include "Validaciones.h"
 
 
-
-int main(void) {
+int main(void)
+{
 	setbuf(stdout, NULL);
 	printf("WELCOME!\n\n");
-	int option;
+
+	Employee arrayEmployees[MAX_EMPLOYEES];
+
+	// variables auxiliares
+	int idResult;
+	char cadenaNombre[MAX_STRING_LENGHT];
+	char cadenaApellido[MAX_STRING_LENGHT];
+	float salario;
+	int sectorCopy;
+	//
+
+	initEmployees(arrayEmployees, MAX_EMPLOYEES);
+
+	int idForSearch;
+	int indexPositionForSearch;
 	int contadorAltas = 0;
-	int resultado;
+	int idCounter = 0;
+	int subMenuOption;
+	int option;
 
-	Employee arrayEmployees[MAXEMPLOYEES];
+	do
+	{
+		option = getIntInMinMaxRange("\nIngrese la opcion que desee:\n"
+									 "-----------------------------------------------------------------------------------------------\n"
+									 "1. ALTA\n"
+									 "2. MODIFICAR\n"
+									 "3. BAJA\n"
+									 "4. INFORMAR\n"
+									 "5. EXIT\n",
+									 "\nError: entrada no válida. Reingrese opcion del menu:\n"
+									 "-----------------------------------------------------------------------------------------------\n"
+									 "1. ALTA\n"
+									 "2. MODIFICAR\n"
+									 "3. BAJA\n"
+									 "4. INFORMAR\n"
+									 "5. EXIT\n", 1, 5);
 
-	initEmployees(arrayEmployees, MAXEMPLOYEES);
-	for (int i = 0; i < MAXEMPLOYEES; ++i) {
-		printf("%d - Value: %d\n", i, arrayEmployees[i].isEmpty);
-	}
-	printf("IS EMPTY = TRUE (1)\n\n");
-
-
-	/*
-	this_isHardCode(arrayEmployees, MAXEMPLOYEES);
-	for (int i = 0; i < MAXEMPLOYEES; ++i) {
-		printf("%d - Value: %d\n", i, arrayEmployees[i].isEmpty);
-	}
-	printf("IS EMPTY = FALSE (0)\n\n\n");
-	*/
-
-
-	//get_id(arrayEmployees, MAXEMPLOYEES);
-
-	/*
-	for (int i = 0; i<MAXEMPLOYEES; i++) {
-		get_id(arrayEmployees, MAXEMPLOYEES);
-		printf("%d - ID N° %d\n", i, arrayEmployees[i].id);
-	}
-	*/
-
-	/*
-	printf("Show Employee:\n");
-	show_employee(arrayEmployees);
-
-	printf("Show all Employees:\n");
-	show_allEmployees(arrayEmployees, MAXEMPLOYEES);
-
-
-
-
-
-
-	for (int i = 0; i < MAXEMPLOYEES; ++i) {
-		printf("%d - Value: %d\n", i, arrayEmployees[i].id);
-	}
-	*/
-
-
-	do {
-		option = get_integer("Ingrese la opcion que desee:\n"
-							 "-----------------------------------------------------------------------------------------------\n"
-							 "1. ALTA\n"
-							 "2. MODIFICAR\n"
-							 "3. BAJA\n"
-							 "4. INFORMAR\n"
-							 "5. EXIT\n",
-				             "\nError: entrada no válida. Reingrese opcion del menu:\n"
-				             "-----------------------------------------------------------------------------------------------\n"
-				             "1. ALTA\n"
-				             "2. MODIFICAR\n"
-				             "3. BAJA\n"
-				             "4. INFORMAR\n"
-				             "5. EXIT\n", 1, 5);
-
-		switch (option) {
-			case 1: 		// yo lo que hice fue hacer una funcion q pide todos los datos y luego llame a esa funcion y le pasas los datos que te pide.
-				enter_employee(arrayEmployees, MAXEMPLOYEES);
-
-				printf("\n\nID: %d\n"
-						"Name: %s\n"
-						"Last name: %s\n"
-						"Salary: %f\n"
-						"Sector: %d\n\n", (*arrayEmployees).id, (*arrayEmployees).name, (*arrayEmployees).lastName, (*arrayEmployees).salary, (*arrayEmployees).sector);
-
-
-				resultado = addEmployee((*arrayEmployees).id, (*arrayEmployees).name, (*arrayEmployees).lastName, (*arrayEmployees).salary, (*arrayEmployees).sector);
-
-
-
-				//aaB = addEmployee(arrayEmployees, MAXEMPLOYEES, arrayEmployees.id, arrayEmployees.name, arrayEmployees. lastName, arrayEmployees.salary, arrayEmployees.sector);
-				//show_employee(arrayEmployees);
-				//addEmployee(arrayEmployees, MAXEMPLOYEES, arrayEmployees.id, arrayEmployees.name, arrayEmployees.lastName, arrayEmployees.salary, arrayEmployees.sector);
-				/*
-				int addEmployee(Employee* list, int len, int id, char name[], char lastName[], float salary, int sector) {
-					int returno;
-
-
-
-
-					return returno;
+		switch (option)
+		{
+			case 1:
+				if (!enterEmployeeData(arrayEmployees, MAX_EMPLOYEES, &idResult, idCounter, cadenaNombre, cadenaApellido, &salario, &sectorCopy))
+				{
+					addEmployee(arrayEmployees, MAX_EMPLOYEES, idResult, cadenaNombre, cadenaApellido, salario, sectorCopy);
+					idCounter++;
 				}
-				employee_getInformation(&arrayEmployees, arrayEmployees.name, arrayEmployees.lastName, arrayEmployees.salary, arrayEmployees.sector);
-				printf("Name: %s\n"
-					   "Apellido: %s\n"
-					   "Salary: %f\n"
-					   "Sector: %d\n", arrayEmployees.name, arrayEmployees.lastName, arrayEmployees.salary, arrayEmployees.sector);
-					   */
-
-				//addEmployee(arrayEmployees, MAXEMPLOYEES, arrayEmployees.id, arrayEmployees.name, arrayEmployees.lastName, arrayEmployees.salary, arrayEmployees.sector);
-
-
-
-
-
-
-				//int addEmployee(sEmployee* list, int len, int id, char name[], char lastName[], float salary, int sector);
-
-
-/*
-				int addEmployee(sEmployee* list, int len, int id, char name[], char lastName[], float salary, int sector) {				 // PARA QUE TANTOS PARAMETROS ??????????
-					int functionReturn = -1;
-					int index = employee_searchForEmptySpace(list, len);
-
-					if(index != -1) {
-						printf("Entering a new employee...\n");
-						employee_enterEmployee(list, index);
-						printf("Employee added!\n");
-						functionReturn = 0;
-					} else {
-						printf("Error. No empty space to enter an employee...\n");
-					}
-
-					return functionReturn;
-				}
-*/
-
 
 				contadorAltas++;
 				system("pause");
 				break;
 
 			case 2:
-				// MODIFICAR
+				if (contadorAltas > 0)
+				{
+					printEmployees(arrayEmployees, MAX_EMPLOYEES);
+					idForSearch = getNumeroMayorQueMinimo("\n\nIngrese un ID para comenzar la búsqueda: \n", "Error - motivo: [Numero inválido]\nPor favor ingrese nuevamente un ID para comenzar la búsqueda: ", ID);
+					indexPositionForSearch = findEmployeeById(arrayEmployees, MAX_EMPLOYEES, idForSearch);
+
+					if (indexPositionForSearch != -1)
+					{
+						do {
+							subMenuOption = getIntInMinMaxRange("\n\nMenu Modificaciones\n"
+																"-------------------------------------\n"
+																"Qué desea modificar?\n\n"
+																"1. Employee Name\n"
+																"2. Employee Last Name\n"
+																"3. Employee Salary\n"
+																"4. Employee Sector\n"
+																"5. Volver al Main Menu\n"
+																"-------------------------------------\n",
+																"\n\nError - motivo: [Número inválido]\n"
+																"Por favor ingrese nuevamente una opción.\n"
+																"Menu Modificaciones\n"
+																"-------------------------------------\n"
+																"Qué desea modificar?\n"
+																"1. Employee Name\n"
+																"2. Employee Last Name\n"
+																"3. Employee Salary\n"
+																"4. Employee Sector\n"
+																"5. Volver al Main Menu\n"
+																"-------------------------------------\n\n", 1, 5);
+
+							switch(subMenuOption)
+							{
+								case 1:
+									modifyName(arrayEmployees, MAX_EMPLOYEES, indexPositionForSearch);
+									break;
+
+								case 2:
+									modifyLastName(arrayEmployees, MAX_EMPLOYEES, indexPositionForSearch);
+									break;
+
+								case 3:
+									modifySalary(arrayEmployees, MAX_EMPLOYEES, indexPositionForSearch);
+									break;
+
+								case 4:
+									modifySector(arrayEmployees, MAX_EMPLOYEES, indexPositionForSearch);
+									break;
+
+								case 5:
+									// Exit SubMenu
+									break;
+							}
+
+							} while (subMenuOption != 5);
+
+					}
+				}
+				else
+				{
+					printf("No hay empleados para mostrar");
+				}
 				break;
 
 			case 3:
 				// BAJA
+				if (contadorAltas > 0)
+				{
+
+				}
+				else
+				{
+					printf("No hay empleados para mostrar");
+				}
 				break;
 
 			case 4:
-				// INFORMAR
+				// INFORMAR:
+				// 1. Listado de los empleados ordenados alfabéticamente por Apellido y Sector.
+				// 2. Total y promedio de los salarios, y cuántos empleados superan el salario promedio.
+				printEmployees(arrayEmployees, MAX_EMPLOYEES);
 				break;
 
 			case 5:
+				// Exit Program
 				printf("\n\nThank you for being there! Bye");
 				break;
 		}
+
 	} while (option != 5);
 
 
 	return EXIT_SUCCESS;
 }
-
-
-
-
-/*
- * 		switch(opcion) {
-			case 1:
-				if (!producto_agregarProducto(arrayProductos, TAM)) {
-					cantidadProductos++;
-				}
-				system("pause");
-				break;
-
-			case 2:
-				producto_mostrarTodos(arrayProductos, TAM);
-				if (!producto_borrarUno(arrayProductos, TAM)) {
-					cantidadProductos--;
-				}
-				system("pause");
-				break;
-
-			case 3:
-
-				break;
-
-			case 4:
-				if (cantidadProductos > 0) {
-					producto_mostrarTodos(arrayProductos, TAM);
-				} else {
-					printf("\nNo hay productos cargados en el sistema.\n\n");
-				}
-				system("pause");
-				break;
-
-			case 5:
-				if (cantidadProductos > 0) {
-					producto_ordenarProductosPorPrecioAsc(arrayProductos, TAM);
-				} else {
-					printf("\nNo hay productos cargados en el sistema.\n\n");
-				}
-				system("pause");
-				break;
-
-			case 6:
-				if (cantidadProductos > 0) {
-					producto_ordenarProductosPorDescripcionAsc(arrayProductos, TAM);
-				} else {
-					printf("\nNo hay productos cargados en el sistema.\n\n");
-				}
-				system("pause");
-				break;
-
-			case 7:
-				printf("Saliendo...\nPrograma terminado.\n");
-				break;
-		}
-	} while (opcion != 7);
- */
-
-
-
-
-
-
-
-
-
-
-
 
 
 

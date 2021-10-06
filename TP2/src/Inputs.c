@@ -9,7 +9,7 @@
 
 
 
-int get_integer(char* message, char* errorMessage, int min, int max) {
+int getIntInMinMaxRange(char* message, char* errorMessage, int min, int max) {
 	int enterIntNumber;
 
 	printf("%s", message);
@@ -28,7 +28,7 @@ int get_integer(char* message, char* errorMessage, int min, int max) {
 
 
 
-void get_string(char* string, char* message, char* errorMessage, int max) {
+void getString(char* string, char* message, char* errorMessage, int max) {
 	char notValidateString[200];
 	int lenght;
 
@@ -51,7 +51,7 @@ void get_string(char* string, char* message, char* errorMessage, int max) {
 
 
 
-float get_float(char* message, char* errorMessage, int min, int max) {
+float getFloatInMinMaxRange(char* message, char* errorMessage, int min, int max) {
 	float enterFloatNumber;
 
 	printf("%s", message);
@@ -70,7 +70,22 @@ float get_float(char* message, char* errorMessage, int min, int max) {
 
 
 
+int getNumeroMayorQueMinimo(char* message, char* errorMessage, int min)
+{
+	int enterIntNumber;
 
+	printf("%s", message);
+	fflush(stdin);
+	scanf("%d", &enterIntNumber);
+
+	while (enterIntNumber < min) {
+		printf("%s", errorMessage);
+		fflush(stdin);
+		scanf("%d", &enterIntNumber);
+	}
+
+	return enterIntNumber;
+}
 
 
 

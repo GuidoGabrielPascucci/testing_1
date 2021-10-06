@@ -4,13 +4,11 @@
 
 
 
-int get_integer(char* message, char* errorMessage, int min, int max);
-void get_string(char* string, char* message, char* errorMessage, int max);
-float get_float(char* message, char* errorMessage, int min, int max);
+int getIntInMinMaxRange(char* message, char* errorMessage, int min, int max);
+void getString(char* string, char* message, char* errorMessage, int max);
+float getFloatInMinMaxRange(char* message, char* errorMessage, int min, int max);
 
-
-
-
+int getNumeroMayorQueMinimo(char* message, char* errorMessage, int min);
 
 
 

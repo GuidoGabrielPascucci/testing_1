@@ -5,9 +5,8 @@
 #include "Inputs.h"
 
 
-
-
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// FUNCIONES IMPRESCINDIBLES
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /**
@@ -19,21 +18,26 @@
  * @param len int Array length
  * @return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
  */
-int initEmployees(Employee* list, int len) {
+int initEmployees(Employee* list, int len)
+{
 	int functionReturn = -1;
 
-	if (list != NULL || len < -1) {			// LEN < -1 ???
-		for (int i = 0; i < len; ++i) {
+	if (list != NULL || len < -1) 			// LEN < -1 ???
+	{
+		for (int i = 0; i < len; ++i)
+		{
 			list[i].isEmpty = TRUE;
 		}
+
 		functionReturn = 0;
-	} else {
+	}
+	else
+	{
 		printf("Invalid length or NULL pointer...\n\n");
 	}
 
 	return functionReturn;
 }
-
 
 
 /**
@@ -50,53 +54,32 @@ int initEmployees(Employee* list, int len) {
  * @return int Return (-1) if Error [Invalid length or NULL pointer or without
 free space] - (0) if Ok
  */
+int addEmployee(Employee* list, int len, int id, char name[], char lastName[], float salary, int sector)
+{
+	int returnValue = -1;
+	int index;
 
+	if (list != NULL)
+	{
+		index = getEmptySpaceInArray(list, len);
 
-int addEmployee(Employee* list, int len, int id, char name[], char lastName[], float salary, int sector) { 			// PARA QUE TANTOS PARAMETROS ??????????
-	int functionReturn = -1;
+		list[index].id = id;
+		strcpy(list[index].name, name);
+		strcpy(list[index].lastName, lastName);
+		list[index].salary = salary;
+		list[index].sector = sector;
+		list[index].isEmpty = FALSE;
 
-	get_string(name, "Ingrese nombre: ", "Error. Ingrese nuevamente el nombre: ", 250);
-	get_string(lastName, "Ingrese apellido: ", "Error. Ingrese nuevamente el apellido: ", 250);
-	salary = get_float("Ingrese salario: ", "Error. Ingrese nuevamente el salario: ", 0, 500000);
-	sector = get_integer("Ingrese sector: ", "Error. Ingrese nuevamente sector: ", 0, 100);
-	get_id(list, len);
-
-	int index = employee_searchForEmptySpace(list, len);
-
-	if(index != -1) {
-		printf("Entering a new employee...\n");
-		enter_employee(list);
-		printf("Employee added!\n");
-
-		//employee_enterEmployee(list, index);
-		functionReturn = 0;
-	} else {
-		printf("Error. No empty space to enter an employee...\n");
+		printf("\nEmployee %s %s, was added successfully!\n", list[index].name, list[index].lastName);
+		returnValue = 0;
+	}
+	else
+	{
+		printf("\n[Invalid length or NULL pointer or without free space]\n\n");
 	}
 
-	return functionReturn;
+	return returnValue;
 }
-
-
-
-/*
-int addEmployee(Employee list[], int len) { // ESTA FUNCION NO VA.
-	int functionReturn = -1;
-	int index = employee_searchForEmptySpace(list, len);
-
-	if(index != -1) {
-		printf("Entering a new employee...\n");
-		employee_enterEmployee(list, index);
-		printf("Employee added!\n");
-		functionReturn = 0;
-	} else {
-		printf("Error. No empty space to enter an employee...\n");
-	}
-
-	return functionReturn;
-}
-*/
-
 
 
 /**
@@ -109,17 +92,35 @@ int addEmployee(Employee list[], int len) { // ESTA FUNCION NO VA.
  * @return Return employee index position or (-1) if [Invalid length or NULL
 pointer received or employee not found]
  */
-/*
-int findEmployeeById(Employee* list, int len, int id) {
+int findEmployeeById(Employee* list, int len, int id)
+{
+	int employeeIndexPosition = -1;
 
-	int functionReturn = -1;
+	if (list != NULL)
+	{
+		for (int i = 0; i < len; ++i)
+		{
+			if (id == list[i].id)
+			{
+				employeeIndexPosition = i;
+				break;
+			}
+		}
 
+		if (employeeIndexPosition == -1)
+		{
+			printf("\n[Error - Reason: [Employee not found]\n\n");
+		}
 
-	functionReturn = 0;
+	}
+	else
+	{
+		printf("\n[Error - Reason: [Invalid length or NULL pointer received]\n\n");
+	}
 
-	return NULL;
+	return employeeIndexPosition;
 }
-*/
+
 
 
 
@@ -138,7 +139,6 @@ int removeEmployee(Employee* list, int len, int id) {
 }
 
 
-
 /**
  * @fn int sortEmployees(Employee*, int, int)
  * @brief Sort the elements in the array of employees, the argument order
@@ -153,9 +153,6 @@ int sortEmployees(Employee* list, int len, int order) {
 }
 
 
-
-
-
 /**
  * @fn int printEmployees(Employee*, int)
  * @brief print the content of employees array
@@ -164,175 +161,240 @@ int sortEmployees(Employee* list, int len, int order) {
  * @param length int
  * @return int
  */
-int printEmployees(Employee* list, int length) {
-	 return 0;
+int printEmployees(Employee* list, int length)
+{
+	int functionValue = -1;;
+
+	if (list != NULL)
+	{
+		printf("\n\n%-10s %-20s %-20s %-20s %-10s\n", "ID", "Name", "Last Name", "Salary", "Sector");
+
+		for (int i = 0; i < length; ++i)
+		{
+			if (list[i].isEmpty == FALSE)
+			{
+				show_employee(&list[i]);
+			}
+		}
+
+		functionValue = 0;
+	}
+
+	return functionValue;
+}
+
+
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// FUNCIONES NECESARIAS
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+// BUSCA ESPACIO LIBRE EN EL ARRAY ---> DEVUELVE EL SUBINDICE (INDEX)
+int getEmptySpaceInArray(Employee* list, int len)
+{
+	int index = -1;
+
+	for (int i = 0; i < len; ++i)
+	{
+		if (list[i].isEmpty == TRUE)
+		{
+			index = i;
+			break;
+		}
+	}
+	return index;
+}
+
+
+
+int enterEmployeeData(Employee* list, int len, int* id, int idCounter, char* name, char* lastName, float* salary, int* sector)
+{
+	int returnValue = -1;
+
+	int index;
+	index = getEmptySpaceInArray(list, len);
+
+	if (index != -1)
+	{
+		printf("\n\nEntering a new employee... Please fill in the fields\n\n");
+
+		*id = generateId(idCounter);
+		getString(name, "Ingrese nombre: ", "Error. Ingrese nuevamente el nombre: ", 200);
+		getString(lastName, "Ingrese apellido: ", "Error. Ingrese nuevamente el apellido: ", 200);
+		*salary = getFloatInMinMaxRange("Ingrese salario: ", "Error. Ingrese nuevamente el salario: ", 0, 1000000);
+		*sector = getIntInMinMaxRange("Ingrese sector: ", "Error. Ingrese nuevamente sector: ", 0, 100);
+
+		returnValue = 0;
+	}
+	else
+	{
+		printf("Error. No empty space to enter an employee...\n");
+	}
+
+	return returnValue;
+}
+
+
+int generateId(int idCounter)
+{
+	int generatedId;
+
+	if (idCounter == 0) {
+		generatedId = ID;
+	} else {
+		generatedId = ID + idCounter;
+	}
+
+	return generatedId;
+}
+
+
+
+// MUESTRA UN EMPLEADO
+void show_employee(Employee* list)
+{
+	printf("%-10d %-20s %-20s %-20.2f %-10d\n", (*list).id,(*list).name, (*list).lastName, (*list).salary, (*list).sector);
 }
 
 
 
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// FUNCIONES PARA MODIFICAR DATOS
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+void modifyName(Employee* list, int len, int indexPosition)
+{
+	char newName[MAX_STRING_LENGHT];
 
-
-// FUNCION PARA TESTEO
-
-void this_isHardCode(Employee* list, int len) {
-	int ids[] = {1000, 1001, 1002};
-	char name[][51] = {"Jose", "Pepe", "Lelo"};
-	char lastName[][51] = {"Perreke", "Perreka", "Perroski"};
-	float salary[] = {15680.24, 13512.56, 19845.74};
-	int sector[] = {1, 3, 8};
-
-	for (int i = 0; i<len; i++) {
-		list[i].id = ids[i];
-		strcpy(list[i].name, name[i]);
-		strcpy(list[i].lastName, lastName[i]);
-		list[i].salary = salary[i];
-		list[i].sector = sector[i];
-		list[i].isEmpty = FALSE;
-	}
-}
-
-
-
-// INGRESA UN EMPLEADO
-void enter_employee(Employee* list, int len) {
-	for (int i = 0; i < len; i++) {
-		if (employee_searchForEmptySpace(list, len) != -1) {
-			get_string((*list).name, "Ingrese nombre: ", "Error. Ingrese nuevamente el nombre: ", 250);
-			get_string((*list).lastName, "Ingrese apellido: ", "Error. Ingrese nuevamente el apellido: ", 250);
-			(*list).salary = get_float("Ingrese salario: ", "Error. Ingrese nuevamente el salario: ", 0, 500000);
-			(*list).sector = get_integer("Ingrese sector: ", "Error. Ingrese nuevamente sector: ", 0, 100);
-			get_id(list, len);
-		}
-		else
-		{
-			printf("Error. No empty space to enter an employee...\n");
-		}
-	}
-}
-
-
-// MUESTRA UN EMPLEADO
-void show_employee(Employee* list) {
-	printf("ID: %d\n"
-			"Name: %s\n"
-			"Last name: %s\n"
-			"Salary: %.2f\n"
-			"Sector: %d\n\n", (*list).id,(*list).name, (*list).lastName, (*list).salary, (*list).sector);
-}
-
-
-// MUESTRA TODOS LOS EMPLEADOS ---> ES LA FUNCION PRINTEMPLOYEE.
-void show_allEmployees(Employee* list, int len) {
-	for (int i = 0; i < len; ++i) {
-		if (list[i].isEmpty == FALSE) {
-			show_employee(&list[i]);
-		}
-	}
-}
-
-// COMO GENERAR ID AUTOMATICO E INCREMENTAL
-void get_id(Employee* list, int len) {
-	int id = 1000;
-	int contadorEmpleados = 0;
-	for (int i = 0; i < len; ++i)
+	if (list != NULL)
 	{
-		if (contadorEmpleados == 0 && list[i].isEmpty == TRUE)
-		{
-			list[i].id = id;
-			list[i].isEmpty = FALSE;
-			break;
-		}
-
-		else if (contadorEmpleados > 0 && list[i].isEmpty == TRUE)
-		{
-			id += 1;
-			list[i].id = id;
-			list[i].isEmpty = FALSE;
-		}
-		contadorEmpleados++;
+		getString(newName, "Ingrese nuevo nombre de empleado: ", "Error - motivo: [Nombre inválido]. Por favor ingrese otro nombre: ", MAX_STRING_LENGHT);
+		strcpy(list[indexPosition].name, newName);
+		printf("Has cambiado el nombre successfully!...\n\n");
+	}
+	else
+	{
+		printf("Error - No se ha podido cambiar el name...\n\n");
 	}
 }
 
 
-// BUSCA ESPACIO LIBRE EN EL ARRAY ---> DEVUELVE EL SUBINDICE (INDEX)
-int employee_searchForEmptySpace(Employee* list, int len) {
-	int index = -1;
-	for (int i = 0; i < len; ++i) {
-		if (list[i].isEmpty == TRUE) {
-			index = i;
-			break;
+
+
+void modifyLastName(Employee* list, int len, int indexPosition)
+{
+	char newLastName[MAX_STRING_LENGHT];
+
+	if (list != NULL)
+	{
+		getString(newLastName, "Ingrese nuevo apellido de empleado: ", "Error - motivo: [Apellido inválido]. Por favor ingrese otro apellido: ", MAX_STRING_LENGHT);
+		strcpy(list[indexPosition].lastName, newLastName);
+		printf("Has cambiado el apellido successfully!...\n\n");
+	}
+	else
+	{
+		printf("Error - No se ha podido cambiar el apellido...\n\n");
+	}
+}
+
+
+
+
+void modifySalary(Employee* list, int len, int indexPosition)
+{
+	float newSalary;
+
+	if (list != NULL)
+	{
+		newSalary = getFloatInMinMaxRange("Ingrese nuevo salary de empleado: ", "Error - motivo: [Salary inválido]. Por favor ingrese otro salary: ", 0, 10000000);
+		list[indexPosition].salary = newSalary;
+		printf("Has cambiado el salary successfully!...\n\n");
+	}
+	else
+	{
+		printf("Error - No se ha podido cambiar el salary...\n\n");
+	}
+}
+
+
+
+void modifySector(Employee* list, int len, int indexPosition)
+{
+	int newSector;
+
+	if (list != NULL)
+	{
+		newSector = getIntInMinMaxRange("Ingrese nuevo sector de empleado: ", "Error - motivo: [Sector inválido]. Por favor ingrese otro sector: ", 1, 100);
+		list[indexPosition].sector = newSector;
+		printf("Has cambiado el sector successfully!...\n\n");
+	}
+	else
+	{
+		printf("Error - No se ha podido cambiar el sector...\n\n");
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+int modifyName(Employee* list, int len, int id, int indexPosition)
+{
+	int functionValue = -1;
+	char newName[MAX_STRING_LENGHT];
+
+	if (list != NULL)
+	{
+		for (int i = 0; i < len; ++i)
+		{
+			if (id == list[i].id)
+			{
+				getString(newName, "Ingrese nuevo nombre de empleado: ", "Error - motivo: [Nombre inválido]. Por favor ingrese otro nombre", MAX_STRING_LENGHT);
+				strcpy(list[i].name,newName);
+			}
 		}
+
+		printf("Has cambiado el nombre successfully!...\n\n");
+		functionValue = 0;
+	}
+	else
+	{
+		printf("Error - No se ha podido cambiar el name...\n\n");
 	}
 
-	return index;
-}
 
 
-
-
-/*
-void employee_enterEmployee(Employee* list, int i) {
-	list[i].id = get_integer("Enter employee ID: ", "Error. Please enter employee ID again: ", 0, 1000); 					// VALORES MINIMO Y MAXIMO ?????????????? MAL. EL ID SE CALCULA AUTOMATICAMENTE!!!!
-	get_string(list[i].name, "Enter employee name: ", "Error. Please enter employee name again: ", MAXSTRINGLENGHT);
-	get_string(list[i].lastName, "Enter employee last name: ", "Error. Please enter employee last name again: ", MAXSTRINGLENGHT);
-	list[i].salary = get_float("Enter employee salary: ", "Error. Please enter employee salary again: ", 0, 1000); 			// VALORES MINIMO Y MAXIMO ??????????????
-	list[i].sector = get_integer("Enter employee sector: ", "Error. Please enter employee sector again: ", 0, 1000);		 // VALORES MINIMO Y MAXIMO ??????????????
-	list[i].isEmpty = FALSE;
+	return functionValue;
 }
 */
-
-
-
-/*
-void employee_getInformation(Employee* list, char* name, char* lastName, float* salary, int* sector) {
-	get_string(name, "Enter employee name: ", "Error. Please enter employee name again: ", MAXSTRINGLENGHT);
-	get_string(lastName, "Enter employee last name: ", "Error. Please enter employee last name again: ", MAXSTRINGLENGHT);
-	*salary = get_float("Enter employee salary: ", "Error. Please enter employee salary again: ", 0, 1000); 					// VALORES MINIMO Y MAXIMO PARA SALARY ??????
-	*sector = get_integer("Enter employee sector: ", "Error. Please enter employee sector again: ", 0, 1000);
-*/
-
-/*
-	char string[MAXSTRINGLENGHT];
-	char string2[MAXSTRINGLENGHT];
-	get_string(string, "Enter employee name: ", "Error. Please enter employee name again: ", MAXSTRINGLENGHT);
-	get_string(string2, "Enter employee last name: ", "Error. Please enter employee last name again: ", MAXSTRINGLENGHT);
-	*name = *string;
-	*lastName = *string2;
-	*salary = get_float("Enter employee salary: ", "Error. Please enter employee salary again: ", 0, 1000); 					// VALORES MINIMO Y MAXIMO PARA SALARY ??????
-	*sector = get_integer("Enter employee sector: ", "Error. Please enter employee sector again: ", 0, 1000);					// VALORES MINIMO Y MAXIMO PARA SECTOR ??????
-
-}
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
