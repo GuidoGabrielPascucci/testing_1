@@ -3,11 +3,9 @@
 #include <string.h>
 #include "ArrayEmployees.h"
 #include "Inputs.h"
+#include "remove_Employee.h"
+#include "sort.h"
 
-
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// FUNCIONES IMPRESCINDIBLES
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /**
  * @fn int initEmployees(Employee*, int)
@@ -22,7 +20,7 @@ int initEmployees(Employee* list, int len)
 {
 	int functionReturn = -1;
 
-	if (list != NULL || len < -1) 			// LEN < -1 ???
+	if (list != NULL || len > -1)
 	{
 		for (int i = 0; i < len; ++i)
 		{
@@ -33,7 +31,9 @@ int initEmployees(Employee* list, int len)
 	}
 	else
 	{
-		printf("Invalid length or NULL pointer...\n\n");
+		printf("\n------------------------------------------------------------------------------------------------\n"
+				"Invalid length or NULL pointer...\n"
+				"------------------------------------------------------------------------------------------------\n\n\n");
 	}
 
 	return functionReturn;
@@ -59,7 +59,7 @@ int addEmployee(Employee* list, int len, int id, char name[], char lastName[], f
 	int returnValue = -1;
 	int index;
 
-	if (list != NULL)
+	if (list != NULL && len > -1)
 	{
 		index = getEmptySpaceInArray(list, len);
 
@@ -70,12 +70,16 @@ int addEmployee(Employee* list, int len, int id, char name[], char lastName[], f
 		list[index].sector = sector;
 		list[index].isEmpty = FALSE;
 
-		printf("\nEmployee %s %s, was added successfully!\n", list[index].name, list[index].lastName);
+		printf("\n________________________________________________________________________________________________\n\n"
+				"Employee %s %s, was added successfully!\n"
+				"________________________________________________________________________________________________\n\n\n", list[index].name, list[index].lastName);
 		returnValue = 0;
 	}
 	else
 	{
-		printf("\n[Invalid length or NULL pointer or without free space]\n\n");
+		printf("\n------------------------------------------------------------------------------------------------\n"
+				"[Invalid length or NULL pointer or without free space]\n"
+				"------------------------------------------------------------------------------------------------\n\n\n");
 	}
 
 	return returnValue;
@@ -100,7 +104,7 @@ int findEmployeeById(Employee* list, int len, int id)
 	{
 		for (int i = 0; i < len; ++i)
 		{
-			if (id == list[i].id)
+			if (id == list[i].id) 			// (id == list[i].id && list[i].isEmpty == FALSE)
 			{
 				employeeIndexPosition = i;
 				break;
@@ -109,13 +113,17 @@ int findEmployeeById(Employee* list, int len, int id)
 
 		if (employeeIndexPosition == -1)
 		{
-			printf("\n[Error - Reason: [Employee not found]\n\n");
+			printf("\n------------------------------------------------------------------------------------------------\n"
+					"Error - Reason: [Employee not found]\n"
+					"------------------------------------------------------------------------------------------------\n\n\n");
 		}
 
 	}
 	else
 	{
-		printf("\n[Error - Reason: [Invalid length or NULL pointer received]\n\n");
+		printf("\n------------------------------------------------------------------------------------------------\n"
+				"Error - Reason: [Invalid length or NULL pointer received]\n"
+				"------------------------------------------------------------------------------------------------\n\n\n");
 	}
 
 	return employeeIndexPosition;
@@ -134,8 +142,30 @@ int findEmployeeById(Employee* list, int len, int id)
  * @return int Return (-1) if Error [Invalid length or NULL pointer or if can't
 find a employee] - (0) if Ok
  */
-int removeEmployee(Employee* list, int len, int id) {
-	 return -1;
+int removeEmployee(Employee* list, int len, int id)
+{
+	int functionValue = -1;
+
+	if (list != NULL)
+	{
+		for (int i = 0; i < len; ++i)
+		{
+			if (id == list[i].id)
+			{
+				list[i].isEmpty = TRUE;
+			}
+		}
+
+		functionValue = 0;
+	}
+	else
+	{
+		printf("\n------------------------------------------------------------------------------------------------\n"
+				"Error - motivo: [Invalid length or NULL pointer]\n"
+				"------------------------------------------------------------------------------------------------\n\n\n"); // [Can't find an employee]
+	}
+
+	return functionValue;
 }
 
 
@@ -148,9 +178,43 @@ indicate UP or DOWN order
  * @param order int [1] indicate UP - [0] indicate DOWN
  * @return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
  */
-int sortEmployees(Employee* list, int len, int order) {
-	 return 0;
+int sortEmployees(Employee* list, int len, int order)
+{
+	int functionValue = -1;
+
+	if (list != NULL && len > -1)
+	{
+		switch(order)
+		{
+			case 0:
+				printf("Entro al CASE 0\n\n"
+						"Orden Descendente");
+
+				sortDescendente(list, len);
+
+				functionValue = 0;
+				break;
+
+			case 1:
+				printf("Entro al CASE 1\n\n"
+						"Orden Ascendente");
+
+				sortAscendente(list, len);
+
+				functionValue = 0;
+				break;
+		}
+	}
+	else
+	{
+		printf("\nError [Invalid length or NULL pointer]\n");
+	}
+
+
+	return functionValue;
 }
+
+
 
 
 /**
@@ -163,255 +227,37 @@ int sortEmployees(Employee* list, int len, int order) {
  */
 int printEmployees(Employee* list, int length)
 {
-	int functionValue = -1;;
-
-	if (list != NULL)
-	{
-		printf("\n\n%-10s %-20s %-20s %-20s %-10s\n", "ID", "Name", "Last Name", "Salary", "Sector");
-
-		for (int i = 0; i < length; ++i)
-		{
-			if (list[i].isEmpty == FALSE)
-			{
-				show_employee(&list[i]);
-			}
-		}
-
-		functionValue = 0;
-	}
-
-	return functionValue;
-}
-
-
-
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// FUNCIONES NECESARIAS
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-// BUSCA ESPACIO LIBRE EN EL ARRAY ---> DEVUELVE EL SUBINDICE (INDEX)
-int getEmptySpaceInArray(Employee* list, int len)
-{
-	int index = -1;
-
-	for (int i = 0; i < len; ++i)
-	{
-		if (list[i].isEmpty == TRUE)
-		{
-			index = i;
-			break;
-		}
-	}
-	return index;
-}
-
-
-
-int enterEmployeeData(Employee* list, int len, int* id, int idCounter, char* name, char* lastName, float* salary, int* sector)
-{
-	int returnValue = -1;
-
-	int index;
-	index = getEmptySpaceInArray(list, len);
-
-	if (index != -1)
-	{
-		printf("\n\nEntering a new employee... Please fill in the fields\n\n");
-
-		*id = generateId(idCounter);
-		getString(name, "Ingrese nombre: ", "Error. Ingrese nuevamente el nombre: ", 200);
-		getString(lastName, "Ingrese apellido: ", "Error. Ingrese nuevamente el apellido: ", 200);
-		*salary = getFloatInMinMaxRange("Ingrese salario: ", "Error. Ingrese nuevamente el salario: ", 0, 1000000);
-		*sector = getIntInMinMaxRange("Ingrese sector: ", "Error. Ingrese nuevamente sector: ", 0, 100);
-
-		returnValue = 0;
-	}
-	else
-	{
-		printf("Error. No empty space to enter an employee...\n");
-	}
-
-	return returnValue;
-}
-
-
-int generateId(int idCounter)
-{
-	int generatedId;
-
-	if (idCounter == 0) {
-		generatedId = ID;
-	} else {
-		generatedId = ID + idCounter;
-	}
-
-	return generatedId;
-}
-
-
-
-// MUESTRA UN EMPLEADO
-void show_employee(Employee* list)
-{
-	printf("%-10d %-20s %-20s %-20.2f %-10d\n", (*list).id,(*list).name, (*list).lastName, (*list).salary, (*list).sector);
-}
-
-
-
-
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// FUNCIONES PARA MODIFICAR DATOS
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-void modifyName(Employee* list, int len, int indexPosition)
-{
-	char newName[MAX_STRING_LENGHT];
-
-	if (list != NULL)
-	{
-		getString(newName, "Ingrese nuevo nombre de empleado: ", "Error - motivo: [Nombre inválido]. Por favor ingrese otro nombre: ", MAX_STRING_LENGHT);
-		strcpy(list[indexPosition].name, newName);
-		printf("Has cambiado el nombre successfully!...\n\n");
-	}
-	else
-	{
-		printf("Error - No se ha podido cambiar el name...\n\n");
-	}
-}
-
-
-
-
-void modifyLastName(Employee* list, int len, int indexPosition)
-{
-	char newLastName[MAX_STRING_LENGHT];
-
-	if (list != NULL)
-	{
-		getString(newLastName, "Ingrese nuevo apellido de empleado: ", "Error - motivo: [Apellido inválido]. Por favor ingrese otro apellido: ", MAX_STRING_LENGHT);
-		strcpy(list[indexPosition].lastName, newLastName);
-		printf("Has cambiado el apellido successfully!...\n\n");
-	}
-	else
-	{
-		printf("Error - No se ha podido cambiar el apellido...\n\n");
-	}
-}
-
-
-
-
-void modifySalary(Employee* list, int len, int indexPosition)
-{
-	float newSalary;
-
-	if (list != NULL)
-	{
-		newSalary = getFloatInMinMaxRange("Ingrese nuevo salary de empleado: ", "Error - motivo: [Salary inválido]. Por favor ingrese otro salary: ", 0, 10000000);
-		list[indexPosition].salary = newSalary;
-		printf("Has cambiado el salary successfully!...\n\n");
-	}
-	else
-	{
-		printf("Error - No se ha podido cambiar el salary...\n\n");
-	}
-}
-
-
-
-void modifySector(Employee* list, int len, int indexPosition)
-{
-	int newSector;
-
-	if (list != NULL)
-	{
-		newSector = getIntInMinMaxRange("Ingrese nuevo sector de empleado: ", "Error - motivo: [Sector inválido]. Por favor ingrese otro sector: ", 1, 100);
-		list[indexPosition].sector = newSector;
-		printf("Has cambiado el sector successfully!...\n\n");
-	}
-	else
-	{
-		printf("Error - No se ha podido cambiar el sector...\n\n");
-	}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-int modifyName(Employee* list, int len, int id, int indexPosition)
-{
 	int functionValue = -1;
-	char newName[MAX_STRING_LENGHT];
 
-	if (list != NULL)
+	if (list != NULL && length > -1)
 	{
-		for (int i = 0; i < len; ++i)
-		{
-			if (id == list[i].id)
-			{
-				getString(newName, "Ingrese nuevo nombre de empleado: ", "Error - motivo: [Nombre inválido]. Por favor ingrese otro nombre", MAX_STRING_LENGHT);
-				strcpy(list[i].name,newName);
-			}
-		}
+			printf("\n\n\n_______________________________________________________________________________________________\n\n"
+					"Employee List\n"
+					"_______________________________________________________________________________________________\n\n"
+					"%-10s %-20s %-20s %-20s %-10s\n", "ID", "Name", "Last Name", "Salary", "Sector\n"
+					"_______________________________________________________________________________________________\n");
 
-		printf("Has cambiado el nombre successfully!...\n\n");
+
+			for (int i = 0; i < length; ++i)
+			{
+				if (list[i].isEmpty == FALSE)
+				{
+					show_employee(&list[i]);
+				}
+			}
+
+		printf("\n\n\n\n\n");
 		functionValue = 0;
 	}
 	else
 	{
-		printf("Error - No se ha podido cambiar el name...\n\n");
+		printf("\n------------------------------------------------------------------------------------------------\n"
+				"No se pudo mostrar el listado [Datos inválidos]\n"
+				"------------------------------------------------------------------------------------------------\n\n\n");
 	}
-
-
 
 	return functionValue;
 }
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

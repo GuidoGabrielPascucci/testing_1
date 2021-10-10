@@ -27,25 +27,21 @@ int getIntInMinMaxRange(char* message, char* errorMessage, int min, int max) {
 
 
 
-
-void getString(char* string, char* message, char* errorMessage, int max) {
-	char notValidateString[200];
-	int lenght;
+int getNumeroMayorQueMinimo(char* message, char* errorMessage, int min)
+{
+	int enterIntNumber;
 
 	printf("%s", message);
 	fflush(stdin);
-	scanf("%[^\n]", notValidateString);
-	lenght = strlen(notValidateString);
+	scanf("%d", &enterIntNumber);
 
-	while(lenght > max)
-	{
+	while (enterIntNumber < min) {
 		printf("%s", errorMessage);
 		fflush(stdin);
-		scanf("%[^\n]", notValidateString);
-		lenght = strlen(notValidateString);
+		scanf("%d", &enterIntNumber);
 	}
 
-	strcpy(string, notValidateString);
+	return enterIntNumber;
 }
 
 
@@ -69,28 +65,25 @@ float getFloatInMinMaxRange(char* message, char* errorMessage, int min, int max)
 
 
 
-
-int getNumeroMayorQueMinimo(char* message, char* errorMessage, int min)
-{
-	int enterIntNumber;
+void getString(char* string, char* message, char* errorMessage, int max) {
+	char notValidateString[200];
+	int lenght;
 
 	printf("%s", message);
 	fflush(stdin);
-	scanf("%d", &enterIntNumber);
+	scanf("%[^\n]", notValidateString);
+	lenght = strlen(notValidateString);
 
-	while (enterIntNumber < min) {
+	while(lenght > max)
+	{
 		printf("%s", errorMessage);
 		fflush(stdin);
-		scanf("%d", &enterIntNumber);
+		scanf("%[^\n]", notValidateString);
+		lenght = strlen(notValidateString);
 	}
 
-	return enterIntNumber;
+	strcpy(string, notValidateString);
 }
-
-
-
-
-
 
 
 

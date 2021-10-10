@@ -5,12 +5,9 @@
 
 
 int getIntInMinMaxRange(char* message, char* errorMessage, int min, int max);
-void getString(char* string, char* message, char* errorMessage, int max);
-float getFloatInMinMaxRange(char* message, char* errorMessage, int min, int max);
-
 int getNumeroMayorQueMinimo(char* message, char* errorMessage, int min);
-
-
+float getFloatInMinMaxRange(char* message, char* errorMessage, int min, int max);
+void getString(char* string, char* message, char* errorMessage, int max);
 
 
 
