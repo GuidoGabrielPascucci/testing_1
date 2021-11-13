@@ -10,17 +10,19 @@ int main() {
 	setbuf(stdout, NULL);
 
     int option = 0;
-    int retorno;
-    //int contadorID = 0;
     int flag = 0;
+    int fileIsOpen = 0;
+    int retorno;
+
+    //int contadorID = 0;
 
     LinkedList* listaEmpleados = ll_newLinkedList();
 
     do{
 
-    	getIntInMinMaxRange(&option, "\n-------------------------------------------------------------------------------------------------------------------\n\n"
+    	getIntInMinMaxRange(&option, "\n===================================================================================================================\n\n"
 									 "MENU\n\n"
-									 "-------------------------------------------------------------------------------------------------------------------\n"
+									 "===================================================================================================================\n"
 									 "1. Cargar los datos de los empleados desde el archivo data.csv (modo texto).\n"
 									 "2. Cargar los datos de los empleados desde el archivo data.csv (modo binario).\n"
 									 "3. Alta de empleado\n"
@@ -31,13 +33,14 @@ int main() {
 									 "8. Guardar los datos de los empleados en el archivo data.csv (modo texto).\n"
 									 "9. Guardar los datos de los empleados en el archivo data.csv (modo binario).\n\n"
 									 "10. Salir\n"
-									 "-------------------------------------------------------------------------------------------------------------------\n"
+									 "===================================================================================================================\n\n"
 									 "Ingrese una opcion: ",
 
+
 									 "\n\n\nERROR! <<La opcion ingresada no es correcta>>\n"
-									 "-------------------------------------------------------------------------------------------------------------------\n"
+									 "===================================================================================================================\n"
 									 "MENU\n\n"
-									 "-------------------------------------------------------------------------------------------------------------------\n"
+									 "===================================================================================================================\n"
 									 "1. Cargar los datos de los empleados desde el archivo data.csv (modo texto).\n"
 									 "2. Cargar los datos de los empleados desde el archivo data.csv (modo binario).\n"
 									 "3. Alta de empleado\n"
@@ -48,50 +51,68 @@ int main() {
 									 "8. Guardar los datos de los empleados en el archivo data.csv (modo texto).\n"
 									 "9. Guardar los datos de los empleados en el archivo data.csv (modo binario).\n\n"
 									 "10. Salir\n"
-									 "-------------------------------------------------------------------------------------------------------------------\n"
+									 "===================================================================================================================\n\n"
 									 "Reingrese una opcion: ", 1, 10);
 
 
         switch(option)
         {
             case 1:
-            	retorno = controller_loadFromText("dataText.csv", listaEmpleados);
-            	if(retorno) {
-            		printf("\n\n\n*******************************************************************************************************************\n\n"
-            				"Se ha cargado el archivo de texto exitosamente!\n\n"
-            				"*******************************************************************************************************************\n\n");
-            		flag = 1;
+            	if(!fileIsOpen) {
+
+            		if(controller_loadFromText("dataText.csv", listaEmpleados)) {
+
+            			printf("\n\n\n*******************************************************************************************************************\n\n"
+            					"Se ha cargado el archivo de texto exitosamente!\n\n"
+            					"*******************************************************************************************************************\n\n");
+
+            			flag = 1;
+            			fileIsOpen = 1;
+            		}
+            		else {
+            			printf("\n\n\nError al abrir el archivo\n\n");
+            		}
             	}
             	else {
-            		printf("\n\n\nError al abrir el archivo\n\n");
+            		printf("\n\nERROR. <<Operacion no valida>>\n"
+            				"Ya has cargado los datos del archivo .csv al sistema!\n\n\n");
             	}
 
             	system("pause");
                 break;
 
             case 2:
-            	retorno = controller_loadFromBinary("dataBinary.csv", listaEmpleados);
-            	if(retorno) {
-            		printf("\n\n\n*******************************************************************************************************************\n\n"
-            				"Se ha cargado el archivo binario exitosamente!\n\n"
-            				"*******************************************************************************************************************\n\n");
-            		flag = 1;
+            	if(!fileIsOpen) {
+
+                	if(controller_loadFromBinary("dataBinary.csv", listaEmpleados)) {
+
+                		printf("\n\n\n*******************************************************************************************************************\n\n"
+                					 "Se ha cargado el archivo binario exitosamente!\n\n"
+                					 "*******************************************************************************************************************\n\n");
+
+                		flag = 1;
+                		fileIsOpen = 1;
+                	}
+                	else {
+                		printf("\n\n\nError al abrir el archivo\n\n");
+                	}
             	}
             	else {
-            		printf("\n\n\nError al abrir el archivo\n\n");
+            		printf("\n\nERROR. <<Operacion no valida>>\n"
+            				"Ya has cargado los datos del archivo .csv al sistema!\n\n\n");
             	}
 
             	system("pause");
             	break;
 
             case 3:
-            	/// 3. Alta de empleado
             	if(flag) {
-                	retorno = controller_addEmployee(listaEmpleados);
-                	if(retorno) {
+
+                	if(controller_addEmployee(listaEmpleados)) {
+
                 		printf("\n\n\n*******************************************************************************************************************\n\n"
-                				"Se ha cargado un empleado exitosamente!\n\n"
-                				"*******************************************************************************************************************\n\n");
+                					 "Se ha cargado un empleado exitosamente!\n\n"
+                					 "*******************************************************************************************************************\n\n");
                 	}
                 	else {
                 		printf("\n\n\nERROR! <<No se ha podido cargar el empleado en el sistema>>\n");
@@ -103,68 +124,105 @@ int main() {
             	}
 
             	system("pause");
-
             	break;
 
             case 4:
-            	/// 4. Modificar datos de empleado
             	if(flag) {
-                	//controller_editEmployee();
-                	//int controller_editEmployee(LinkedList* pArrayListEmployee);
+            		do{
+            			retorno = controller_editEmployee(listaEmpleados);
+
+            			switch(retorno) {
+							case -1:
+								printf("\n\n\nERROR! <<Lista nula>>\n");
+								system("pause");
+								break;
+
+							case 0:
+								printf("\n\n\n*******************************************************************************************************************\n\n"
+											 "Se han modificado los datos del empleado exitosamente!\n\n"
+											 "*******************************************************************************************************************\n\n");
+								system("pause");
+								break;
+
+							case 1:
+								printf("\n\n\nNo se han modificado los datos del empleado\n");
+								system("pause");
+								break;
+            			}
+
+            			if(!retorno || retorno == 1) {
+            				getIntInMinMaxRange(&retorno, "\n\n¿Que desea realizar?\n"
+														  	   "-------------------------------------------------------------------------------------------------------------------\n"
+														  	   "1. Modificar datos de empleado\n"
+														  	   "2. Volver al Menu Principal\n\n\n",
+
+														  "\n\nERROR! <<Opcion invalido>>\n"
+															  "Por favor reingrese una opcion...\n\n"
+															  "¿Desea modificar datos de empleado?\n"
+															  "-------------------------------------------------------------------------------------------------------------------\n"
+															  "1. Modificar datos de empleado\n"
+															  "2. Volver al Menu Principal\n\n\n", 1, 2);
+
+            				switch (retorno) {
+								case 2:
+									retorno = -1;
+									break;
+            				}
+            			}
+
+            		} while(retorno != -1 && retorno != 3);
             	}
             	else {
             		printf("\n\n\nERROR! <<No hay empleados cargados en el sistema>>\n");
+                	system("pause");
             	}
 
-            	system("pause");
+            	printf("\n");
             	break;
 
             case 5:
-            	/// 5. Baja de empleado
             	if(flag) {
             		do {
             			retorno = controller_removeEmployee(listaEmpleados);
 
             			switch(retorno) {
-							case -1: /// LINKED LIST NULL
+							case -1:
 								printf("\n\n\nERROR! <<Lista nula>>\n");
 								system("pause");
 								break;
 
-							case 0: /// BORRO EMPLEADO
+							case 0:
 		                		printf("\n\n\n*******************************************************************************************************************\n\n"
-		                				"Se ha removido un empleado exitosamente!\n\n"
-		                				"*******************************************************************************************************************\n\n");
+		                					 "Se ha removido un empleado exitosamente!\n\n"
+		                					 "*******************************************************************************************************************\n\n");
 		                		system("pause");
-
-		                		getIntInMinMaxRange(&retorno, "\n\n¿Desea seguir eliminando empleados de la lista?\n"
-		                									  "-------------------------------------------------------------------------------------------------------------------\n"
-		                									  "1. Eliminar otro empleado\n"
-		                									  "2. Volver al Menu Principal\n\n\n",
-
-															  "\n\nERROR! <<Numero ingresado invalido>>\n"
-															  "Por favor reingrese una opcion...\n\n"
-															  "¿Desea seguir eliminando empleados de la lista?\n"
-															  "-------------------------------------------------------------------------------------------------------------------\n"
-															  "1. Eliminar otro empleado\n"
-															  "2. Volver al Menu Principal\n\n\n", 1, 2);
-
-		                		switch (retorno) {
-
-									case 2:
-										retorno = -1;
-										break;
-		                		}
-
-		                		printf("\n\n\n");
 								break;
 
-							case 1: /// CANCELO EN LA VERIFICACION
-								printf("\n\n\nEl empleado sigue cargado en el sistema\n");
+							case 1:
+								printf("\n\n\n* El empleado sigue cargado en el sistema\n");
 								system("pause");
 								break;
             			}
 
+            			if(!retorno || retorno == 1) {
+	                		getIntInMinMaxRange(&retorno, "\n\n¿Que desea realizar?\n"
+	                									  	   "-------------------------------------------------------------------------------------------------------------------\n"
+	                									  	   "1. Eliminar un empleado\n"
+	                									  	   "2. Volver al Menu Principal\n\n\n",
+
+														  "\n\nERROR! <<Opcion invalida>>\n"
+															  "Por favor reingrese una opcion...\n\n"
+															  "¿Desea eliminar un empleado de la lista?\n"
+															  "-------------------------------------------------------------------------------------------------------------------\n"
+															  "1. Eliminar un empleado\n"
+															  "2. Volver al Menu Principal\n\n\n", 1, 2);
+
+	                		switch (retorno) {
+								case 2:
+									retorno = -1;
+									break;
+	                		}
+            			}
 
             		} while(retorno != -1 && retorno != 3);
 
@@ -174,6 +232,7 @@ int main() {
             		system("pause");
             	}
 
+            	printf("\n");
             	break;
 
             case 6:
@@ -182,16 +241,24 @@ int main() {
                 	printf("\n\n");
             	}
             	else {
-            		printf("\n\n\nERROR! <<No hay empleados cargados en el sistema>>\n");
+            		printf("\n\n\nERROR! <<No hay empleados cargados en el sistema>>\n\n");
             	}
 
+            	system("pause");
             	break;
 
             case 7:
-            	/// 7. Ordenar empleados
             	if(flag) {
-                	//controller_sortEmployee();
-                	//int controller_sortEmployee(LinkedList* pArrayListEmployee);
+
+            		if(controller_sortEmployee(listaEmpleados)) {
+
+                		printf("\n\n\n*******************************************************************************************************************\n\n"
+            						 "Se han ordenado los datos exitosamente!\n\n"
+            						 "*******************************************************************************************************************\n\n");
+                	}
+                	else {
+                		printf("\n\nHa ocurrido un error...\n\n");
+                	}
             	}
             	else {
             		printf("\n\n\nERROR! <<No hay empleados cargados en el sistema>>\n");
@@ -202,11 +269,12 @@ int main() {
 
             case 8:
             	if(flag) {
-            		retorno = controller_saveAsText("dataText.csv", listaEmpleados);
-            		if(retorno) {
+
+            		if(controller_saveAsText("dataText.csv", listaEmpleados)) {
+
             			printf("\n\n\n*******************************************************************************************************************\n\n"
-            					"Se ha guardado el archivo de texto exitosamente!\n\n"
-            					"*******************************************************************************************************************\n\n");
+            						 "Se ha guardado el archivo de texto exitosamente!\n\n"
+            						 "*******************************************************************************************************************\n\n");
             		}
             		else {
             			printf("\n\n\nError al abrir el archivo\n\n");
@@ -221,11 +289,12 @@ int main() {
 
             case 9:
             	if(flag) {
-            		retorno = controller_saveAsBinary("dataBinary.csv", listaEmpleados);
-            		if(retorno) {
+
+            		if(controller_saveAsBinary("dataBinary.csv", listaEmpleados)) {
+
                 		printf("\n\n\n*******************************************************************************************************************\n\n"
-                				"Se ha guardado el archivo binario exitosamente!\n\n"
-                				"*******************************************************************************************************************\n\n");
+                					 "Se ha guardado el archivo binario exitosamente!\n\n"
+                					 "*******************************************************************************************************************\n\n");
             		}
             		else {
             			printf("\n\n\nError al abrir el archivo\n\n");
@@ -239,12 +308,16 @@ int main() {
             	break;
 
             case 10:
-            	/// 10. Salir
-            	printf("\n\nSee you later!\n"
-            		   "Exit program...");
+            	printf("\n\n\n"
+            			"===================================================================================================================\n"
+            			"Programa finalizado!\n"
+            			"===================================================================================================================");
             	break;
         }
-    }while(option != 10);
+
+    } while(option != 10);
+
+
     return 0;
 }
 

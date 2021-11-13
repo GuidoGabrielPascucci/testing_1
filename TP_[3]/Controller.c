@@ -84,97 +84,68 @@ int controller_addEmployee(LinkedList* pArrayListEmployee) {
  * \return int
  *
  */
-/*
+
 int controller_editEmployee(LinkedList* pArrayListEmployee) {
 
-	int retorno = 0;
-	int option;
+	int retorno = -1;
 	int selectedID;
+	int index = -1;
 	Employee *pEmployee = NULL;
 
+	if(pArrayListEmployee != NULL) {
 
-	/// MUESTRO LISTA DE EMPLEADOS PARA QUE USUARIO ELIJA ID A MODIFICAR
-	controller_ListEmployee(pArrayListEmployee);
+		do{
+			controller_ListEmployee(pArrayListEmployee);
 
-	/// GUARDO ID SELECCIONADO
-	getIntHigherThan(&selectedID, "Ingrese el ID del empleado que desee modificar: ",
+			getIntHigherThan(&selectedID, "\n\n-------------------------------------------------------------------------------------------------------------------\n"
+										  "Ingrese el ID del empleado que desee modificar: ",
 
-								  "ERROR <<Entrada invalida - El ID debe ser un numero entero mayor a cero>>\n"
-								  "Por favor reingrese el ID del empleado que desee modificar: ", 1);
+										  "\n\n-------------------------------------------------------------------------------------------------------------------\n"
+										  "ERROR <<Entrada invalida - El ID debe ser un numero entero mayor a cero>>\n"
+										  "Por favor reingrese el ID del empleado que desee modificar: ", 0);
 
 
+			for (int i = 0; i < ll_len(pArrayListEmployee); ++i) {
 
-	for (int i = 0; i < ll_len(pArrayListEmployee); ++i) {
+				pEmployee = (Employee*) ll_get(pArrayListEmployee, i);
 
-		if () {
+				if(selectedID == pEmployee->id) {
+					index = i;
+					break;
+				}
+			}
 
-		}
+
+			if(index == -1) {
+				printf("\nERROR <<ID no encontrado>>\n"
+						"El ID seleccionado no pertenece a ningun empleado cargado en la lista\n\n");
+				system("pause");
+			}
+
+		} while(index == -1);
+
+
+		retorno = editarEmpleado(pEmployee);
 	}
 
-
-	/// pEmployee = ll_get(pArrayListEmployee, selectedID);
-
-
-	if(pEmployee != NULL) {
-
-	}
-	else {
-		printf("\nERROR <<ID no encontrado>>");
-	}
-
-
-
-	employee_getId(pArrayListEmployee, selectedID);
-
-
-	do{
-
-		getIntInMinMaxRange(&option, "-------------------------------------------------------------------------------------------------------------------\n"
-									  "Editar Empleado\n"
-									  "-------------------------------------------------------------------------------------------------------------------\n"
-									  "1. Modificar Nombre\n"
-									  "2. Modificar Horas Trabajadas\n"
-									  "3. Modificar Sueldo\n\n"
-									  "4. Volver a la seleccion de empleado\n"
-									  "5. Volver al menu principal\n"
-									  "-------------------------------------------------------------------------------------------------------------------\n\n\n"
-									  "Selecciona la modificacion que desees realizar: ",
-
-									  "ERROR! <<La opcion es invalida>>\n"
-									  "-------------------------------------------------------------------------------------------------------------------\n"
-									  "Editar Empleado\n"
-									  "-------------------------------------------------------------------------------------------------------------------\n"
-									  "1. Modificar Nombre\n"
-									  "2. Modificar Horas Trabajadas\n"
-									  "3. Modificar Sueldo\n\n"
-									  "4. Volver a la seleccion de empleado\n"
-									  "5. Volver al menu principal\n"
-									  "-------------------------------------------------------------------------------------------------------------------\n\n\n"
-									  "Vuelve a seleccionar la modificacion que desees realizar: ", 1, 5);
-
-
-		switch(option) {
-
-			case 1:
-				/// funcion modificar nombre
-				break;
-
-			case 2:
-				/// funcion modificar horas trabajadas
-				break;
-
-			case 3:
-				/// funcion modificar sueldo
-				break;
-		}
-
-	} while(option != 4 && option != 5);
 
 
 
 	return retorno;
 }
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -188,89 +159,51 @@ int controller_editEmployee(LinkedList* pArrayListEmployee) {
 int controller_removeEmployee(LinkedList* pArrayListEmployee) {
 
 	int retorno = -1;
-	int option;
 	int selectedID;
-	//Employee *pEmployee = NULL;
+	int index = -1;
+	Employee *pEmployee = NULL;
+
 
 	if(pArrayListEmployee != NULL) {
 
-		/// MUESTRO LISTA DE EMPLEADOS PARA QUE USUARIO ELIJA ID A BORRAR
-		controller_ListEmployee(pArrayListEmployee);
+		do{
+			controller_ListEmployee(pArrayListEmployee);
 
-		/// GUARDO ID SELECCIONADO
-		getIntHigherThan(&selectedID, "\n\n-------------------------------------------------------------------------------------------------------------------\n"
-									  "Ingrese el ID del empleado que desee remover de la lista: ",
+			getIntHigherThan(&selectedID, "\n\n-------------------------------------------------------------------------------------------------------------------\n"
+										  "Ingrese el ID del empleado que desee remover de la lista: ",
 
-									  "\n\n-------------------------------------------------------------------------------------------------------------------\n"
-									  "ERROR <<Entrada invalida - El ID debe ser un numero entero mayor a cero>>\n"
-									  "Por favor reingrese el ID del empleado que desee remover de la lista: ", 1);
-
-
-		/*
-		for (int i = 0; i < ll_len(pArrayListEmployee); ++i) {
-		}
-		/// pEmployee = ll_get(pArrayListEmployee, selectedID);
-		if(pEmployee != NULL) {
-
-		}
-		else {
-			printf("\nERROR <<ID no encontrado>>");
-		}
-		employee_getId(pArrayListEmployee, selectedID);
-		 */
+										  "\n\n-------------------------------------------------------------------------------------------------------------------\n"
+										  "ERROR <<Entrada invalida - El ID debe ser un numero entero mayor a cero>>\n"
+										  "Por favor reingrese el ID del empleado que desee remover de la lista: ", 0);
 
 
-			getIntInMinMaxRange(&option, "\n\n\n-------------------------------------------------------------------------------------------------------------------\n"
-										 "Menu Remover Empleado\n"
-										 "-------------------------------------------------------------------------------------------------------------------\n"
-										 "1. Remover Empleado de la lista\n\n"
-										 "2. Volver a la seleccion de empleado\n"
-										 "3. Volver al menu principal\n"
-										 "-------------------------------------------------------------------------------------------------------------------\n\n\n"
-										 "Selecciona la opcion que desees realizar: ",
+			for (int i = 0; i < ll_len(pArrayListEmployee); ++i) {
 
+				pEmployee = (Employee*) ll_get(pArrayListEmployee, i);
 
-										 "\n\n\nERROR! <<La opcion ingresada no es valida>>\n"
-										 "-------------------------------------------------------------------------------------------------------------------\n"
-										 "Menu Remover Empleado\n"
-										 "-------------------------------------------------------------------------------------------------------------------\n"
-										 "1. Remover Empleado de la lista\n\n"
-										 "2. Volver a la seleccion de empleado\n"
-										 "3. Volver al menu principal\n"
-										 "-------------------------------------------------------------------------------------------------------------------\n\n\n"
-										 "Selecciona nuevamente la opcion que desees realizar: ", 1, 3);
-
-
-			switch(option) {
-				case 1:
-					/// REMOVER EMPLEADO
-					if(confirmarRemoverEmpleado()) {
-					/// codigo para borrar empleado
-					///
-					///
-					///
-					retorno = 0;
-					}
-					else {
-						retorno = 1;
-					}
+				if(selectedID == pEmployee->id) {
+					index = i;
 					break;
-
-				case 2:
-					/// opcion 2 - Volver a la seleccion de empleado
-					retorno = 2;
-					break;
-
-				case 3:
-					/// opcion 3 - Volver al menu principal
-					retorno = 3;
-					break;
+				}
 			}
+
+			if(index == -1) {
+				printf("\nERROR <<ID no encontrado>>\n"
+						"El ID seleccionado no pertenece a ningun empleado cargado en la lista\n\n");
+				system("pause");
+			}
+
+		} while(index == -1);
+
+
+		retorno = removerEmpleado(pEmployee, pArrayListEmployee, index);
 	}
 
 
 	return retorno;
 }
+
+
 
 
 
@@ -299,7 +232,7 @@ int controller_ListEmployee(LinkedList* pArrayListEmployee) {
 
 	for (int i = 0; i < ll_len(pArrayListEmployee); ++i) {
 
-		pEmployee = ll_get(pArrayListEmployee, i);
+		pEmployee = (Employee*) ll_get(pArrayListEmployee, i);
 
 		employee_getId(pEmployee, &id);
 		employee_getNombre(pEmployee, nombre);
@@ -327,14 +260,75 @@ int controller_ListEmployee(LinkedList* pArrayListEmployee) {
 int controller_sortEmployee(LinkedList* pArrayListEmployee) {
 
 	int retorno = 0;
+	int option;
+	int criterioDeOrdenamiento;
+
+	int (*pSortByID)() = sortByID;
+	int (*pSortByName)() = sortByName;
+	int (*pSortByHours)() = sortByHours;
+	int (*pSortBySalary)() = sortBySalary;
+
+
+	if(pArrayListEmployee != NULL) {
+
+
+		getIntInMinMaxRange(&option, "\n\n\nSeleccione la opcion de ordenamiento que desee:\n"
+									 	   "-------------------------------------------------------------------------------------------------------------------\n"
+									 	   "1. ID\n"
+									 	   "2. Nombre\n"
+									 	   "3. Horas Trabajadas\n"
+									 	   "4. Sueldo\n\n\n",
+
+
+									 "\n\n\nERROR <<Opcion no valida>>\n"
+										   "Seleccione la opcion de ordenamiento que desee:\n"
+										   "-------------------------------------------------------------------------------------------------------------------\n"
+										   "1. ID\n"
+										   "2. Nombre\n"
+										   "3. Horas Trabajadas\n"
+										   "4. Sueldo\n\n\n", 1, 4);
+
+
+		getIntInMinMaxRange(&criterioDeOrdenamiento, "\nSeleccione el criterio de ordenamiento:\n"
+													   "-------------------------------------------------------------------------------------------------------------------\n"
+													   "0. Descendente\n"
+													   "1. Ascendente\n",
+
+													 "\nERROR <<Opcion no valida>>\n"
+													   "Seleccione el criterio de ordenamiento:\n"
+													   "-------------------------------------------------------------------------------------------------------------------\n"
+													   "0. Descendente\n"
+													   "1. Ascendente\n", 0, 1);
 
 
 
 
+		switch(option) {
+			case 1:
+				ll_sort(pArrayListEmployee, pSortByID, criterioDeOrdenamiento);
+				break;
+
+			case 2:
+				ll_sort(pArrayListEmployee, pSortByName, criterioDeOrdenamiento);
+				break;
+
+			case 3:
+				ll_sort(pArrayListEmployee, pSortByHours, criterioDeOrdenamiento);
+				break;
+
+			case 4:
+				ll_sort(pArrayListEmployee, pSortBySalary, criterioDeOrdenamiento);
+				break;
+		}
+
+		retorno = 1;
+	}
 
 
 	return retorno;
 }
+
+
 
 
 

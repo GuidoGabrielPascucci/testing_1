@@ -35,6 +35,10 @@ Employee* employee_newParametros(char* idStr, char* nombreStr, char* horasTrabaj
 
 void employee_delete(Employee* this) {
 
+	if(this != NULL) {
+		free(this);
+		this = NULL;
+	}
 
 }
 
