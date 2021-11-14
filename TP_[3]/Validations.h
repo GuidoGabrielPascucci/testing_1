@@ -1,4 +1,3 @@
-
 #ifndef VALIDATIONS_H_
 #define VALIDATIONS_H_
 

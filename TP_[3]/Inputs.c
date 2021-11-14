@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,8 +6,6 @@
 #include "Inputs.h"
 #include "Validations.h"
 
-
-/// BIBLIOTECA INPUT CON USO DE PUNTEROS
 
 
 /**
@@ -43,10 +40,6 @@ int getIntInMinMaxRange(int* enteredNumber, char* message, char* errorMessage, i
 
 	return functionReturn;
 }
-
-
-/// while((validateInteger(enterIntNumber)) || (enterIntNumber < min || enterIntNumber > max))
-
 
 
 
